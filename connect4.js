@@ -15,54 +15,113 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
  *   board = array of rows, each row is array of cells  (board[y][x])
  */
 
-function makeBoard() {
-  for (let y = 0; y < HEIGHT; y++) {
-    board.push(Array.from({ length: WIDTH }));
+class Game {
+  constructor(height, width, player){
+    this.height = height;
+    this.width = width;
+    this.player = player;
+  }
+  makeBoard() {
+    for (let y = 0; y < this.height; y++) {
+      board.push(Array.from({ length: this.width }));
+    }
+    //return board?
+  }
+
+  makeHtmlBoard() {
+    const board = document.getElementById('board');
+
+    // make column tops (clickable area for adding a piece to that column)
+    const top = document.createElement('tr');
+    top.setAttribute('id', 'column-top');
+
+    for (let x = 0; x < this.width; x++) {
+      const headCell = document.createElement('td');
+      headCell.setAttribute('id', x);
+      headCell.addEventListener('click', handleClick);
+      top.append(headCell);
+    }
+
+    board.append(top);
+
+    // make main part of board
+    for (let y = 0; y < this.height; y++) {
+      const row = document.createElement('tr');
+
+      for (let x = 0; x < this.width; x++) {
+        const cell = document.createElement('td');
+        cell.setAttribute('id', `c-${y}-${x}`);
+        row.append(cell);
+      }
+      board.append(row);
+    }
+  }
+
+  findSpotForCol(x) {
+    for (let y = this.height - 1; y >= 0; y--) {
+      if (!board[y][x]) {
+        return y;
+      }
+    }
+    return null;
   }
 }
+
+
+
+
+
+
+
+
+// function makeBoard() {
+//   for (let y = 0; y < HEIGHT; y++) {
+//     board.push(Array.from({ length: WIDTH }));
+//   }
+// }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
-function makeHtmlBoard() {
-  const board = document.getElementById('board');
+// function makeHtmlBoard() {
+//   const board = document.getElementById('board');
 
-  // make column tops (clickable area for adding a piece to that column)
-  const top = document.createElement('tr');
-  top.setAttribute('id', 'column-top');
-  
-  for (let x = 0; x < WIDTH; x++) {
-    const headCell = document.createElement('td');
-    headCell.setAttribute('id', x);
-    headCell.addEventListener('click', handleClick);
-    top.append(headCell);
-  }
+//   // make column tops (clickable area for adding a piece to that column)
+//   const top = document.createElement('tr');
+//   top.setAttribute('id', 'column-top');
 
-  board.append(top);
+//   for (let x = 0; x < WIDTH; x++) {
+//     const headCell = document.createElement('td');
+//     headCell.setAttribute('id', x);
+//     headCell.addEventListener('click', handleClick);
+//     top.append(headCell);
+//   }
 
-  // make main part of board
-  for (let y = 0; y < HEIGHT; y++) {
-    const row = document.createElement('tr');
+//   board.append(top);
 
-    for (let x = 0; x < WIDTH; x++) {
-      const cell = document.createElement('td');
-      cell.setAttribute('id', `c-${y}-${x}`);
-      row.append(cell);
-    }
+//   // make main part of board
+//   for (let y = 0; y < HEIGHT; y++) {
+//     const row = document.createElement('tr');
 
-    board.append(row);
-  }
-}
+//     for (let x = 0; x < WIDTH; x++) {
+//       const cell = document.createElement('td');
+//       cell.setAttribute('id', `c-${y}-${x}`);
+//       row.append(cell);
+//     }
+
+//     board.append(row);
+//   }
+// }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
-function findSpotForCol(x) {
-  for (let y = HEIGHT - 1; y >= 0; y--) {
-    if (!board[y][x]) {
-      return y;
-    }
-  }
-  return null;
-}
+// function findSpotForCol(x) {
+//   for (let y = HEIGHT - 1; y >= 0; y--) {
+//     if (!board[y][x]) {
+//       return y;
+//     }
+//   }
+//   return null;
+// }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 

@@ -32,8 +32,9 @@ class Game {
   }
 
   makeHtmlBoard() {
-    const htmlBoard = document.getElementById('board');
 
+    const htmlBoard = document.getElementById('board');
+    htmlBoard.innerHTML = "";
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
@@ -108,12 +109,23 @@ class Game {
     spot.append(piece);
   }
   checkForWin() {
-    function _win(cells) {
-      // Check four cells to see if they're all color of current player
-      //  - cells: list of four (y, x) cells
-      //  - returns true if all are legal coordinates & all match currPlayer
+    console.log(this, "this in checkForWin")
+    // function _win(cells) {
+    //   // Check four cells to see if they're all color of current player
+    //   //  - cells: list of four (y, x) cells
+    //   //  - returns true if all are legal coordinates & all match currPlayer
 
-      return cells.every(
+    //   return cells.every(
+    //     ([y, x]) =>
+    //       y >= 0 &&
+    //       y < this.height &&
+    //       x >= 0 &&
+    //       x < this.width &&
+    //       this.board[y][x] === this.currPlayer
+    //   );
+    // }
+    let _win = (cells)=> {
+      cells.every(
         ([y, x]) =>
           y >= 0 &&
           y < this.height &&
@@ -133,7 +145,7 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (this._win(horiz) || this._win(vert) || this._win(diagDR) || this._win(diagDL)) {
+        if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
           return true;
         }
       }

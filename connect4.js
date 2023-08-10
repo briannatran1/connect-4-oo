@@ -16,20 +16,19 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
  */
 
 class Game {
-  constructor(height, width, player){
+  constructor(height, width){
     this.height = height;
     this.width = width;
-    this.player = player;
   }
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
-      board.push(Array.from({ length: this.width }));
+      board.push(Array.from({ length: this.width })).fill(null);
     }
     return board;
   }
 
   makeHtmlBoard() {
-    const board = document.getElementById('board');
+    const htmlBoard = document.getElementById('board');
 
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
@@ -37,12 +36,12 @@ class Game {
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
-      headCell.setAttribute('id', x);
+      headCell.setAttribute('id', `${x}`);
       headCell.addEventListener('click', handleClick);
       top.append(headCell);
     }
 
-    board.append(top);
+    htmlBoard.append(top);
 
     // make main part of board
     for (let y = 0; y < this.height; y++) {
@@ -53,7 +52,7 @@ class Game {
         cell.setAttribute('id', `c-${y}-${x}`);
         row.append(cell);
       }
-      board.append(row);
+      htmlBoard.append(row);
     }
   }
 
@@ -67,7 +66,7 @@ class Game {
   }
   handleClick(evt) {
     // get x from ID of clicked cell
-    const x = +evt.target.id;
+    const x = evt.target.id;
 
     // get next spot in column (if none, ignore click)
     const y = findSpotForCol(x);
@@ -112,15 +111,15 @@ class Game {
       return cells.every(
         ([y, x]) =>
           y >= 0 &&
-          y < HEIGHT &&
+          y < this.height &&
           x >= 0 &&
-          x < WIDTH &&
+          x < this.width &&
           board[y][x] === currPlayer
       );
     }
 
-    for (let y = 0; y < HEIGHT; y++) {
-      for (let x = 0; x < WIDTH; x++) {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
         // get "check list" of 4 cells (starting here) for each of the different
         // ways to win
         const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
@@ -135,12 +134,9 @@ class Game {
       }
     }
   }
-  this.makeBoard()
-  this.makeHtmlBoard()
 }
 
-
-
+new Game(6,7);
 
 
 

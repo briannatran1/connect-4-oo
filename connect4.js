@@ -6,16 +6,6 @@
  * board fills (tie)
  */
 
-// const WIDTH = 7;
-// const HEIGHT = 6;
-
-// let currPlayer = 1; // active player: 1 or 2
-// let board = []; // array of rows, each row is array of cells  (board[y][x])
-
-/** makeBoard: create in-JS board structure:
- *   board = array of rows, each row is array of cells  (board[y][x])
- */
-
 class Game {
   constructor(height, width){
     this.height = height;
@@ -25,6 +15,10 @@ class Game {
     this.makeBoard();
     this.makeHtmlBoard();
   }
+
+  /** makeBoard: create in-JS board structure:
+ *   board = array of rows, each row is array of cells  (board[y][x])
+ */
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
@@ -42,7 +36,7 @@ class Game {
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
       headCell.setAttribute('id', `${x}`);
-      headCell.addEventListener('click', this.handleClick.bind(this));
+      headCell.addEventListener('click', this.handleClick.bind(this)); //returns new bound copy of the method
       console.log('handleClick this =', this);
       top.append(headCell);
     }
@@ -70,6 +64,7 @@ class Game {
     }
     return null;
   }
+
   handleClick(evt) {
     // get x from ID of clicked cell
     const x = evt.target.id;
@@ -97,9 +92,11 @@ class Game {
     // switch players
     this.currPlayer = this.currPlayer === 1 ? 2 : 1;
   }
+
   endGame(msg) {
     alert(msg);
   }
+
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
@@ -108,8 +105,9 @@ class Game {
     const spot = document.getElementById(`c-${y}-${x}`);
     spot.append(piece);
   }
+
   checkForWin() {
-    let _win = (cells) => {
+    const _win = (cells) => {
       return cells.every(
         ([y, x]) =>
           y >= 0 &&

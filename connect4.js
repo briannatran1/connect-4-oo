@@ -25,6 +25,7 @@ class Game {
     }
   }
 
+  /** makeHtmlBoard: make HTML table and row of column tops.  */
   makeHtmlBoard() {
     const htmlBoard = document.getElementById('board');
     htmlBoard.innerHTML = "";
@@ -56,6 +57,7 @@ class Game {
     }
   }
 
+  /** findSpotForCol: given column x, return top empty y (null if filled) */
   findSpotForCol(x) {
     for (let y = this.height - 1; y >= 0; y--) {
       if (!this.board[y][x]) {
@@ -65,6 +67,12 @@ class Game {
     return null;
   }
 
+  /** handleClick: handle click of column top to play piece
+   *
+   * Prevent additional moves here if game over:
+   * In handleClick, check gameOver property and if false, return to ignore click
+   *
+   */
   handleClick(evt) {
     // get x from ID of clicked cell
     const x = evt.target.id;
@@ -93,10 +101,12 @@ class Game {
     this.currPlayer = this.currPlayer === 1 ? 2 : 1;
   }
 
+  /** endGame: announce game end */
   endGame(msg) {
     alert(msg);
   }
 
+  /** placeInTable: update DOM to place piece into HTML board */
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
@@ -106,6 +116,7 @@ class Game {
     spot.append(piece);
   }
 
+  /** checkForWin: check board cell-by-cell for "does a win start here?" */
   checkForWin() {
     const _win = (cells) => {
       return cells.every(
